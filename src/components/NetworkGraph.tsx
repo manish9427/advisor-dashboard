@@ -5,10 +5,14 @@ import dynamic from 'next/dynamic';
 
 const ForceGraph2D = dynamic(() => import('react-force-graph-2d'), { ssr: false });
 
+type GraphNode = { id: string; name: string; val: number; color: string; type: string };
+type GraphLink = { source: string; target: string; color: string };
+type GraphData = { nodes: GraphNode[]; links: GraphLink[] };
+
 // Generate a synthetic graph to match the visual density of the screenshot
 const generateGraphData = () => {
-  const nodes: any[] = [];
-  const links: any[] = [];
+  const nodes: GraphNode[] = [];
+  const links: GraphLink[] = [];
 
   // 1. RM Node (Center)
   nodes.push({ id: 'rm1', name: 'RM', val: 30, color: '#f59e0b', type: 'rm' });
@@ -49,7 +53,7 @@ const generateGraphData = () => {
 
 export default function NetworkGraph() {
   const fgRef = useRef<any>(null);
-  const [data, setData] = useState({ nodes: [], links: [] });
+  const [data, setData] = useState<GraphData>({ nodes: [], links: [] });
 
   useEffect(() => {
     setData(generateGraphData());
